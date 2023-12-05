@@ -210,7 +210,7 @@ class Polynomial:
 
 
 def test_colinearity(points):
-    domain = [p[0] for p in points]
-    values = [p[1] for p in points]
+    domain = [p.x for p in points]
+    values = [p.y for p in points]
     polynomial = Polynomial.interpolate_domain(domain, values)
     return polynomial.degree() == 1

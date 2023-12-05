@@ -53,7 +53,7 @@ class G1Point:
         return G1Point(nx, ny)
 
     def scalar_mul(self, scalar: int) -> "G1Point":
-        result = G1Point(None, None)  # Identity
+        result = G1Point.zero()  # Identity
         addend = self
         while scalar:
             if scalar & 1:
@@ -71,6 +71,10 @@ class G1Point:
     def __eq__(self, other):
         if not isinstance(other, G1Point):
             raise TypeError("Cannot compare G1Point with non-G1Point")
+        if self.is_identity() and other.is_identity():
+            return True
+        if self.is_identity() or other.is_identity():
+            return False
         return self.x == other.x and self.y == other.y
 
     def __hash__(self):
@@ -97,7 +101,7 @@ class G1Point:
 
         # Check for the additive inverse (result is the identity element)
         if self.x == other.x and self.y != other.y:
-            return G1Point(None, None)
+            return G1Point.zero()
 
         return self.add(other)
 
@@ -116,7 +120,7 @@ class G1Point:
 
 
 G1 = G1Point(Fp(1), Fp(2))
-POINT_AT_INFINITY = G1Point(None, None)
+POINT_AT_INFINITY = G1Point.zero()
 
 
 def is_on_curve(pt: G1Point):
