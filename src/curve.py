@@ -24,6 +24,8 @@ class G1Point:
         return f"X: {hex(self.x.value)}\nY: {hex(self.y.value)}"
 
     def __repr__(self) -> str:
+        if self.x is None or self.y is None:
+            return "G1P(infinity)"
         x_hex = hex(self.x.value)
         y_hex = hex(self.y.value)
         x_formatted = x_hex[:7] + "..." + x_hex[-5:]
