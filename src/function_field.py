@@ -17,6 +17,18 @@ class FunctionFelt:
     the curve's equation is y^2 = x^3 + A*x + B
     """
 
+    def __mul__(self, other)-> "FunctionFelt":
+        """
+        Multiplication of two function field elements.
+        """
+        ac = self.a * other.a
+        bd = self.b * other.b
+        ad = self.a * other.b
+        bc = self.b * other.a
+        E_eq = Polynomial([BaseFieldElement(B, Fp), Fp.zero(), Fp.zero(), Fp.one()])
+        return FunctionFelt(ac + E_eq * bd, ad + bc)
+
+
     def norm(self) -> RationalFunction:
         """
         Return the norm of this element as a rational function in x.
