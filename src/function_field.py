@@ -19,7 +19,7 @@ class FunctionFelt:
 
     def norm(self) -> RationalFunction:
         """
-        Return the norm of this element as a polynomial in x.
+        Return the norm of this element as a rational function in x.
         N(f) = f(x,y) * f(x,-y) = N(x) = a(x)^2 - (x^3 + A*x + B) * b(x)^2
         See section 2.2.
         """
@@ -41,17 +41,17 @@ class FunctionFelt:
         return self.a.evaluate(pt.x) - pt.y * self.b.evaluate(pt.x)
 
     @staticmethod
-    def gen_random(num_degree: int = 4, den_degree: int = 4):
+    def gen_random(max_degree: int = 5) -> "FunctionFelt":
         """
         Generate a random function field element with numerator/denominator of maximum degree num_degree and den_degree respectively.
         """
-        a_num = Polynomial([Fp(rint(0, P - 1)) for _ in range(rint(1, num_degree + 1))])
-        a_den = Polynomial([Fp(rint(0, P - 1)) for _ in range(rint(1, den_degree + 1))])
-        b_num = Polynomial([Fp(rint(0, P - 1)) for _ in range(rint(1, num_degree + 1))])
-        b_den = Polynomial([Fp(rint(0, P - 1)) for _ in range(rint(1, den_degree + 1))])
-
+        polys = []
+        for _ in range(4):
+            polys.append(
+                Polynomial([Fp(rint(0, P - 1)) for _ in range(rint(1, max_degree + 1))])
+            )
         return FunctionFelt(
-            RationalFunction(a_num, a_den), RationalFunction(b_num, b_den)
+            RationalFunction(polys[0], polys[1]), RationalFunction(polys[2], polys[3])
         )
 
 
@@ -104,17 +104,6 @@ if __name__ == "__main__":
 
     f1 = incremental_witness(D)
     f2 = mumford_witness(D)
-
-    def gen_random_ffelt():
-        a = RationalFunction(
-            Polynomial([Fp(rint(0, P - 1)), Fp(rint(0, P - 1))]),
-            Polynomial([Fp(rint(0, P - 1))]),
-        )
-        b = RationalFunction(
-            Polynomial([Fp(rint(0, P - 1)), Fp(rint(0, P - 1))]),
-            Polynomial([Fp(rint(0, P - 1))]),
-        )
-        return FunctionFelt(a, b)
 
     f = FunctionFelt.gen_random()
 

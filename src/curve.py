@@ -16,8 +16,7 @@ P = 0x30644E72E131A029B85045B68181585D97816A916871CA8D3C208C16D87CFD47
 N = 0x30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001
 # ------------------------------------------------------------
 
-# Encode special +inf and -inf points as non-rechable integers in the field
-
+# Encode special +inf points as non-rechable integer in the field
 INF = -1
 
 Fp = BaseField(P)
