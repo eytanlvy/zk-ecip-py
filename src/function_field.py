@@ -21,14 +21,65 @@ class FunctionFelt:
         """
         Multiplication of two function field elements.
         """
+        if isinstance(other, int):
+            other = FunctionFelt(
+                RationalFunction(Polynomial([Fp(other)]), Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, Fp):
+            other = FunctionFelt(
+                RationalFunction(Polynomial([other]), Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, Polynomial):
+            other = FunctionFelt(
+                RationalFunction(other, Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, RationalFunction):
+            other = FunctionFelt(other, RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])))
         ac = self.a * other.a
         bd = self.b * other.b
         ad = self.a * other.b
         bc = self.b * other.a
         E_eq = Polynomial([BaseFieldElement(B, Fp), Fp.zero(), Fp.zero(), Fp.one()])
         return FunctionFelt(ac + E_eq * bd, ad + bc)
+    
+    def __rmul__(self, other) -> "FunctionFelt":
+        return self.__mul__(other)
 
-
+    def __add__(self, other) -> "FunctionFelt":
+        """
+        Addition of two function field elements.
+        """
+        if isinstance(other, int):
+            other = FunctionFelt(
+                RationalFunction(Polynomial([Fp(other)]), Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, Fp):
+            other = FunctionFelt(
+                RationalFunction(Polynomial([other]), Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, Polynomial):
+            other = FunctionFelt(
+                RationalFunction(other, Polynomial([Fp.one()])),
+                RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])),
+            )
+        if isinstance(other, RationalFunction):
+            other = FunctionFelt(other, RationalFunction(Polynomial([Fp.zero()]), Polynomial([Fp.one()])))
+        return FunctionFelt(self.a + other.a, self.b + other.b)
+    
+    def __radd__(self, other) -> "FunctionFelt":
+        return self.__add__(other)
+    
+    def __rsub__(self, other) -> "FunctionFelt":
+        return -self + other
+    
+    def __sub__(self, other) -> "FunctionFelt":
+        return self + (-other)
+    
     def norm(self) -> RationalFunction:
         """
         Return the norm of this element as a rational function in x.
